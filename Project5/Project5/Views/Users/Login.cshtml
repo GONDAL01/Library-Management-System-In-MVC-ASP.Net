@@ -1,0 +1,37 @@
+﻿@model Project5.Models.User
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2 class="text-center">Login to Your Account</h2>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="well">
+            @using (Html.BeginForm("Login", "Users", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email)
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" class="form-control" />
+                    @Html.ValidationMessage("password")
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </div>
+            }
+            <p class="text-center">
+                @Html.ActionLink("Forgot Password?", "ForgotPassword")
+            </p>
+        </div>
+    </div>
+</div>

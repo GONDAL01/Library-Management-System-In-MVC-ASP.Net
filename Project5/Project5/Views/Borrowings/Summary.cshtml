@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Project5.Models.BorrowingSummaryViewModel>
+
+@{
+    ViewBag.Title = "Borrowing Summary";
+}
+
+<h2>Borrowing Summary</h2>
+
+<table class="table">
+    <tr>
+        <th>Book Title</th>
+        <th>Borrowed By</th>
+        <th>Borrow Date</th>
+        <th>Return Date</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.BookTitle)</td>
+            <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+            <td>@Html.DisplayFor(modelItem => item.BorrowDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.ReturnDate)</td>
+        </tr>
+    }
+</table>
+
+@Html.ActionLink("Back to List", "Index")

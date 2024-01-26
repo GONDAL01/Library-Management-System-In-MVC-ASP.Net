@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Library Management System</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .navbar-custom {
+            background-color: #004d40; /* Dark Green for example */
+        }
+
+            .navbar-custom .nav-link, .navbar-custom .navbar-brand {
+                color: white !important; /* Changes font color to white */
+            }
+
+        .footer-custom {
+            background-color: #00251a; /* Darker shade for footer */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-custom">
+        <div class="container">
+            @Html.ActionLink("Library Management System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Books", "Index", "Books", new { area = "" }, new { @class = "nav-link" })</li>
+                   @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Borrowing", "Index", "Borrowings", new { area = "" }, new { @class = "nav-link" })</li>
+                        if (Roles.IsUserInRole("Librarian") || Roles.IsUserInRole("Manager"))
+                        {
+                            <li>@Html.ActionLink("User", "Index", "Users", new { area = "" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("User Role", "Index", "UserRoles", new { area = "" }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Roles", "Index", "Roles", new { area = "" }, new { @class = "nav-link" })</li>
+                        }
+                    }
+                    <!-- Additional links can be added here if needed -->
+                </ul>
+                <ul class="navbar-nav">
+                    @if (!Request.IsAuthenticated) {
+                        <li class="nav-item">
+                            @Html.ActionLink("Login", "Login", "Users", new { area = "" }, new { @class = "nav-link" })
+                        </li>
+                    } else {
+                        <li class="nav-item">
+                            <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">Logout</a>
+                            @using (Html.BeginForm("Logout", "Users", FormMethod.Post, new { id = "logoutForm", @class = "hidden" }))
+                            {
+                                @Html.AntiForgeryToken()
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer class="footer-custom">
+            <p>&copy; @DateTime.Now.Year - Library Management System</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
