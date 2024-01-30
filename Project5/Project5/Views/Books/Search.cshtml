@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Project5.Models.Book>
+@{
+    ViewBag.Title = "Search";
+}
+
+<h2>Search</h2>
+
+<style>
+    .heading-color {
+        background-color: #007bff; /* Bootstrap primary color */
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .table-custom {
+        margin-top: 20px;
+        border-collapse: collapse;
+        width: 100%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .table-custom th, .table-custom td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: #f8f9fa;
+        }
+
+    .btn-custom {
+        display: inline-block;
+        margin: 0 5px; /* Spacing between buttons */
+    }
+</style>
+
+
+<div class="container">
+    <div class="heading-color">
+        <h2 class="mb-0">BOOKS</h2>
+    </div>
+
+
+    <table class="table-custom">
+        <tr>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Category</th>
+
+          
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td>@Html.DisplayFor(modelItem => item.Author)</td>
+                <td>@Html.DisplayFor(modelItem => item.Genre)</td>
+
+
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.BookId }, new { @class = "btn btn-info btn-custom" })
+                    @Html.ActionLink("Borrow", "Create", "Borrowings", new { bookId = item.BookId }, new { @class = "btn btn-success btn-custom" })
+
+                    @if (User.IsInRole("Librarian") || User.IsInRole("Manager"))
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.BookId }, new { @class = "btn btn-secondary btn-custom" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.BookId }, new { @class = "btn btn-danger btn-custom" })
+                    }
+                </td>
+
+            </tr>
+        }
+    </table>
+</div>
+

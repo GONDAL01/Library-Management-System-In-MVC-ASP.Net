@@ -1,62 +1,87 @@
 ﻿@model Project5.Models.Borrowing
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Borrow Book";
 }
 
-<h2>Borrow Book</h2>
+<style>
+    .borrow-book-heading {
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
 
+    .form-container {
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        background-color: #f8f9fa;
+        padding: 20px;
+        margin-top: 20px;
+    }
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Borrowing</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.BookId, "Book Name", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("BookId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BookId, "", new { @class = "text-danger" })
+    .btn-custom {
+        width: auto;
+        display: block;
+        margin: 10px auto;
+    }
+</style>
+
+<div class="container">
+    <div class="borrow-book-heading">
+        <h2 class="mb-0">BORROW BOOK</h2>
+    </div>
+
+    <div class="form-container">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BookId, "Book Name", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("BookId", null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.BookId, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserId, "Name", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("UserId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserId, "Name", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("UserId", null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.BorrowDate,"Borrow Date", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BorrowDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BorrowDate, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.BorrowDate, "Borrow Date", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.BorrowDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BorrowDate, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ReturnDate,"Return Date", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ReturnDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ReturnDate, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReturnDate, "Expected Return Date", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ReturnDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ReturnDate, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div class="text-center">
+                <input type="submit" value="Borrow" class="btn btn-primary btn-custom" />
             </div>
+        }
+
+        <div class="text-center">
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary btn-custom" })
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts {

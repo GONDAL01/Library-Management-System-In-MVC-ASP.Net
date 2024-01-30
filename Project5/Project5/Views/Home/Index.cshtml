@@ -2,11 +2,74 @@
     ViewBag.Title = "Library Management System";
 }
 
+<style>
+    /* ... other styles ... */
+
+    .table-custom {
+        margin-top: 20px;
+        width: 60%; /* Adjusted to match your books table */
+        border-collapse: collapse;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    }
+
+        .table-custom th, .table-custom td {
+            padding: 8px;
+            text-align: center; /* Centered text to match your books table */
+            border: 1px solid #dee2e6; /* Border color matching the screenshot */
+        }
+
+        .table-custom th {
+            background-color: #007bff; /* Bootstrap primary color for header */
+            color: white;
+        }
+
+        .table-custom td {
+            background-color: #f8f9fa; /* Light grey background for table data */
+        }
+
+    /* ... other styles ... */
+</style>
+
 <main>
     <section class="row" aria-labelledby="libraryTitle">
         <h1 id="libraryTitle">Library Management</h1>
         <p class="lead">Our Library Management System is a user-friendly platform for managing books, patrons, and library lending services using modern web technologies.</p>
+
+        <!-- Student Information Table -->
+        <table class="table-custom" aria-describedby="studentInfo">
+            <caption id="studentInfo" style="caption-side: top; text-align: center; padding: 8px; color: #007bff; font-size: 1.5em;">
+                Student Information
+            </caption>
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Student ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Zaheer ud din IQBAL</td>
+                    <td>12100662</td>
+                </tr>
+                <tr>
+                    <td>Hussain</td>
+                    <td>12100717</td>
+                </tr>
+                <tr>
+                    <td>Muhammad Zain</td>
+                    <td>12201796</td>
+                </tr>
+                <tr>
+                    <td>Mohammad bin Abdul Rehman</td>
+                    <td>12203138</td>
+                </tr>
+                <!-- Additional student rows can be added here -->
+            </tbody>
+        </table>
+
+        <!-- Link to Browse Books -->
         <p><a href="@Url.Action("Index", "Books")" class="btn btn-primary btn-md">Browse Books &raquo;</a></p>
     </section>
-
 </main>

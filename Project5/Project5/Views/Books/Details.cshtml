@@ -1,52 +1,63 @@
 ﻿@model Project5.Models.Book
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Book Details";
 }
 
-<h2>Book Details</h2>
+<style>
+    .book-details-heading {
+        background-color: #007bff; /* Example background color */
+        color: white; /* Text color */
+        padding: 10px 0;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
 
-<div>
-   
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
+    .book-details-container {
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        background-color: #f8f9fa;
+        padding: 20px;
+        margin-top: 20px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
+    .btn-custom {
+        width: auto;
+        display: block;
+        margin: 10px auto;
+    }
+</style>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
+<div class="container">
+    <div class="book-details-heading">
+        <h2 class="mb-0">BOOK DETAILS</h2>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Author)
-        </dd>
+    <div class="book-details-container">
+        <dl class="dl-horizontal">
+            <dt>Title:</dt>
+            <dd>@Html.DisplayFor(model => model.Title)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Genre)
-        </dt>
+            <dt>Author:</dt>
+            <dd>@Html.DisplayFor(model => model.Author)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Genre)
-        </dd>
+            <dt>Genre:</dt>
+            <dd>@Html.DisplayFor(model => model.Genre)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
+            @if (User.IsInRole("Librarian") || User.IsInRole("Manager"))
+            {
+                <dt>Quantity:</dt>
+                <dd>@Html.DisplayFor(model => model.Quantity)</dd>
+            }
+        </dl>
 
-        <dd>
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-
-    </dl>
+        <div class="text-center">
+            @if (User.IsInRole("Librarian") || User.IsInRole("Manager"))
+            {
+                <a href="@Url.Action("Edit", "Books", new { id = Model.BookId })" class="btn btn-primary btn-custom">Edit</a>
+            }
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary btn-custom" })
+        </div>
+    </div>
 </div>
-<p>
-    @if (Request.IsAuthenticated) { 
-        @Html.ActionLink("Edit", "Edit", new { id = Model.BookId }) |
-
-    @Html.ActionLink("Back to List", "Index")
-</p>

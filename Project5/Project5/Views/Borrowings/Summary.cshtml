@@ -2,27 +2,82 @@
 
 @{
     ViewBag.Title = "Borrowing Summary";
+    bool isLibrarianOrManager = User.IsInRole("Librarian") || User.IsInRole("Manager");
 }
 
-<h2>Borrowing Summary</h2>
-
-<table class="table">
-    <tr>
-        <th>Book Title</th>
-        <th>Borrowed By</th>
-        <th>Borrow Date</th>
-        <th>Return Date</th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@Html.DisplayFor(modelItem => item.BookTitle)</td>
-            <td>@Html.DisplayFor(modelItem => item.UserName)</td>
-            <td>@Html.DisplayFor(modelItem => item.BorrowDate)</td>
-            <td>@Html.DisplayFor(modelItem => item.ReturnDate)</td>
-        </tr>
+<style>
+    .borrowings-heading {
+        background-color: #007bff; /* Example background color */
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        border-radius: 5px;
+        margin-bottom: 20px;
     }
-</table>
 
-@Html.ActionLink("Back to List", "Index")
+    .table-custom {
+        margin-top: 20px;
+        border-collapse: collapse;
+        width: 100%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .table-custom th, .table-custom td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: #f8f9fa;
+        }
+
+    .btn-custom {
+        display: inline-block;
+        margin: 0 5px; /* Spacing between buttons */
+    }
+</style>
+
+<div class="container">
+    <div class="borrowings-heading">
+        <h2 class="mb-0">Borrowing Summary</h2>
+    </div>
+
+    <table class="table-custom">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                @if (isLibrarianOrManager)
+                {
+                    <th>Person Name</th>
+                }
+                <th>Borrow Date</th>
+                <th>Expected Return Date</th>
+                <th>Actual Return Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.BookTitle</td>
+                    @if (isLibrarianOrManager)
+                    {
+                        <td>@item.UserName</td>
+                    }
+                    <td>@item.BorrowDate.ToShortDateString()</td>
+                    <td>@(item.ReturnDate.HasValue ? item.ReturnDate.Value.ToShortDateString() : "N/A")</td>
+                    <td>@(item.ActualReturnDate.HasValue ? item.ActualReturnDate.Value.ToShortDateString() : "Not Returned")</td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="@(isLibrarianOrManager ? 5 : 4)">No borrowing records found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @Html.ActionLink("Back to List", "Index", new { @class = "btn btn-default btn-custom" })
+</div>

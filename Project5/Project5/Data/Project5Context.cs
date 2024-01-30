@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Project5.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -28,5 +29,8 @@ namespace Project5.Data
         public System.Data.Entity.DbSet<Project5.Models.Book> Books { get; set; }
 
         public System.Data.Entity.DbSet<Project5.Models.Borrowing> Borrowings { get; set; }
+        public DbSet<BookReturn> BookReturns { get; set; }
+
+
     }
 }

@@ -1,64 +1,113 @@
 ﻿@model IEnumerable<Project5.Models.Book>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Books";
 }
 
-<h2>Books</h2>
-
-<p>
-    @if (User.IsInRole("Librarian") || User.IsInRole("Manager"))
-    {
-        @:|
-        @Html.ActionLink("ADD Book", "Create")
-
+<style>
+    .heading-color {
+        background-color: #007bff; /* Bootstrap primary color */
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        border-radius: 5px;
+        margin-bottom: 20px;
     }
 
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Author)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Genre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </th>
-        <th></th>
-    </tr>
+    .table-custom {
+        margin-top: 20px;
+        border-collapse: collapse;
+        width: 100%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Author)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Genre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Quantity)
-        </td>
-        <td>
-            @Html.ActionLink("Details", "Details", new { id = item.BookId }) |
+        .table-custom th, .table-custom td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
 
+        .table-custom th {
+            background-color: #f8f9fa;
+        }
+
+    .btn-custom {
+        display: inline-block;
+        margin: 0 5px; /* Spacing between buttons */
+    }
+
+    .search-bar-container {
+        margin-bottom: 20px; /* Adds some space between the search bar and the table */
+    }
+
+    .search-input-group {
+        width: 100%;
+    }
+
+        .search-input-group input[type="text"] {
+            width: calc(100% - 100px); /* Adjust width as needed, leaving space for the button */
+        }
+
+        .search-input-group button {
+            width: 100px;
+        }
+</style>
+
+<div class="container">
+    <div class="heading-color">
+        <h2 class="mb-0">BOOKS</h2>
+    </div>
+
+    @if (User.IsInRole("Librarian") || User.IsInRole("Manager"))
+    {
+        <p class="text-center">
+            @Html.ActionLink("ADD Book", "Create", null, new { @class = "btn btn-primary btn-custom" })
+        </p>
+    }
+
+    <!-- Search Bar Container -->
+    <div class="search-bar-container">
+        @using (Html.BeginForm("Search", "Books", FormMethod.Get, new { @class = "search-input-group", role = "search" }))
+        {
+            <input type="text" class="form-control" name="resname" placeholder="Enter book title">
+            <button type="submit" class="btn btn-primary">Search</button>
+        }
+    </div>
+
+
+    <table class="table-custom">
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
             @if (User.IsInRole("Librarian") || User.IsInRole("Manager"))
             {
-                @:|
-                @Html.ActionLink("Edit", "Edit", new { id = item.BookId })
-                @:|
-                @Html.ActionLink("Delete", "Delete", new { id = item.BookId })
+                <th>Quantity</th>
             }
+            <th>Actions</th>
+        </tr>
 
-        </td>
-    </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td>@Html.DisplayFor(modelItem => item.Author)</td>
+                <td>@Html.DisplayFor(modelItem => item.Genre)</td>
+                @if (User.IsInRole("Librarian") || User.IsInRole("Manager"))
+                {
+                    <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                }
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.BookId }, new { @class = "btn btn-info btn-custom" })
+                    @Html.ActionLink("Borrow", "Create", "Borrowings", new { bookId = item.BookId }, new { @class = "btn btn-success btn-custom" })
 
-</table>
+                    @if (User.IsInRole("Librarian") || User.IsInRole("Manager"))
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.BookId }, new { @class = "btn btn-secondary btn-custom" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.BookId }, new { @class = "btn btn-danger btn-custom" })
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>

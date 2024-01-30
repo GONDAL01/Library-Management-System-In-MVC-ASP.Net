@@ -55,7 +55,7 @@ namespace Project5.Controllers
             return RedirectToAction("Login", "Users");
         }
 
-        [Authorize]
+        [Authorize (Roles="Librarian,Manager")]
         // GET: Users
         public ActionResult Index()
         {
@@ -63,19 +63,37 @@ namespace Project5.Controllers
         }
 
         // GET: Users/Details/5
+        [Authorize]
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            User user;
+
+            // If no ID is specified, or if the current user is not a librarian or admin,
+            // default to showing the current user's own details.
+            if (!id.HasValue || !User.IsInRole("Librarian") && !User.IsInRole("Admin"))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var userEmail = User.Identity.Name;
+                user = db.Users.FirstOrDefault(u => u.Email.Equals(userEmail, StringComparison.OrdinalIgnoreCase));
             }
-            User user = db.Users.Find(id);
+            else // If the user is a librarian or admin, and an ID is specified, attempt to show that user's details.
+            {
+                user = db.Users.Find(id.Value);
+            }
+
             if (user == null)
             {
                 return HttpNotFound();
             }
+
+            // Additional check to prevent non-privileged users from seeing other users' details
+            if (!User.IsInRole("Librarian") && !User.IsInRole("Admin") && User.Identity.Name != user.Email)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
             return View(user);
         }
+
 
         // GET: Users/Create
         public ActionResult Create()
@@ -98,47 +116,51 @@ namespace Project5.Controllers
 
             return View(user);
         }
-        [Authorize]
         // GET: Users/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.Users.Find(id);
-            if (user == null)
+
+            var user = db.Users.Find(id);
+            if (user == null || (!User.IsInRole("Admin") && User.Identity.Name != user.Email))
             {
                 return HttpNotFound();
             }
+
             return View(user);
         }
 
         // POST: Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit([Bind(Include = "UserId,Name,DOB,Email,PhoneNumber,Address,PasswordHash")] User user)
         {
             if (ModelState.IsValid)
             {
                 var userInDb = db.Users.Find(user.UserId);
-                if (userInDb != null)
+                if (userInDb != null && (User.IsInRole("Admin") || User.Identity.Name == userInDb.Email))
                 {
+                    // Update the properties you want to allow the user to change
                     userInDb.Name = user.Name;
                     userInDb.DOB = user.DOB;
-                    userInDb.Email = user.Email;
                     userInDb.PhoneNumber = user.PhoneNumber;
                     userInDb.Address = user.Address;
-                    userInDb.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
+                    // Do not update the password here as it's not included in the form
 
                     db.Entry(userInDb).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index"); // Or redirect to 'Details'
                 }
             }
+
             return View(user);
         }
-        [Authorize]
+        [Authorize(Roles="Librarian,Manager")]
         // GET: Users/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -153,7 +175,7 @@ namespace Project5.Controllers
             }
             return View(user);
         }
-
+        [Authorize(Roles="Librarian,Manager")]
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -165,6 +187,7 @@ namespace Project5.Controllers
             return RedirectToAction("Index");
         }
 
+      
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -11,5 +11,7 @@ namespace Project5.Models
         public string UserName { get; set; }
         public DateTime BorrowDate { get; set; }
         public DateTime? ReturnDate { get; set; }
+        public DateTime? ActualReturnDate { get; set; } // Actual return date when the book is returned
+        
     }
 }

@@ -1,80 +1,80 @@
 ﻿@model Project5.Models.User
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit User Details";
 }
 
-<h2>Edit Details</h2>
+<style>
+    .edit-details-heading {
+        background-color: #007bff; /* Example background color */
+        color: white; /* Text color */
+        padding: 10px 0;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
 
+    .edit-details-container {
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        background-color: #f8f9fa;
+        padding: 20px;
+        margin-top: 20px;
+    }
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.UserId)
+        .edit-details-container th {
+            width: 30%;
+        }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        .edit-details-container td {
+            width: 70%;
+        }
+
+    .btn-custom {
+        width: auto; /* Adjust as necessary, auto will make it as wide as the text + padding */
+        display: block; /* Makes it a block element */
+        margin: 10px auto; /* Centers the button */
+    }
+</style>
+
+<div class="container">
+    <h2 class="edit-details-heading text-center">EDIT USER DETAILS</h2>
+    <div class="edit-details-container">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <table class="table">
+                @Html.HiddenFor(model => model.UserId)
+                <tbody>
+                    <tr>
+                        <th>@Html.LabelFor(model => model.Name)</th>
+                        <td>@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.LabelFor(model => model.DOB)</th>
+                        <td>@Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control", type = "date" } })</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.LabelFor(model => model.Email)</th>
+                        <td>@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.LabelFor(model => model.PhoneNumber, "Contact Number")</th>
+                        <td>@Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.LabelFor(model => model.Address)</th>
+                        <td>@Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <input type="submit" value="Save Changes" class="btn btn-primary btn-custom" />
+                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-secondary btn-custom" })
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DOB, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PhoneNumber,"Contact Number", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PasswordHash, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PasswordHash, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PasswordHash, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
+        }
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts {

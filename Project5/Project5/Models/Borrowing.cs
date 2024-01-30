@@ -28,6 +28,9 @@ namespace Project5.Models
         public DateTime BorrowDate { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime? ReturnDate { get; set; }
+        public DateTime? ReturnDate { get; set; }  // Expected return date
+
+        [DataType(DataType.Date)]
+        public DateTime? ActualReturnDate { get; set; } // Actual return date when the book is returned
     }
 }

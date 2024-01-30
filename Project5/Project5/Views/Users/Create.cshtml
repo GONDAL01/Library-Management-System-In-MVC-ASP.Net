@@ -1,79 +1,124 @@
 ﻿@model Project5.Models.User
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Account";
 }
 
-<h2>Add New User</h2>
+<style>
+    .container-custom {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        background-color: #f8f9fa;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    }
 
+    .header-custom {
+        color: #007bff;
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-control {
+        border-radius: .25rem;
+        padding: .375rem .75rem;
+        border: 1px solid #ced4da;
+    }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+        }
+
+    .btn-custom {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: .375rem .75rem;
+        border-radius: .25rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        width: 100%;
+    }
+
+        .btn-custom:hover {
+            color: #fff;
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+
+    .link-custom {
+        color: #007bff;
+        padding-top: 10px;
+        display: block;
+        text-align: center;
+        text-decoration: none;
+    }
+
+        .link-custom:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<div class="container-custom">
+    <h2 class="header-custom">Create Account</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name)
             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.DOB, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="form-group">
+            @Html.LabelFor(model => model.DOB)
             @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email)
             @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.PhoneNumber,"Contact Number", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="form-group">
+            @Html.LabelFor(model => model.PhoneNumber)
             @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address)
             @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.PasswordHash, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="form-group">
+            @Html.LabelFor(model => model.PasswordHash, "Password")
             @Html.PasswordFor(model => model.PasswordHash, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.PasswordHash, "", new { @class = "text-danger" })
         </div>
-    </div>
 
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+        <div class="form-group">
+            <button type="submit" class="btn btn-custom">Register</button>
         </div>
-    </div>
-</div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+        <div class="link-custom">
+            @Html.ActionLink("Already have an account? Login here.", "Login")
+        </div>
+    }
 </div>
 
 @section Scripts {

@@ -36,6 +36,7 @@ namespace Project5.Controllers
             }
             return View(book);
         }
+
         [Authorize (Roles ="Librarian,Manager")]
         // GET: Books/Create
         public ActionResult Create()
@@ -117,6 +118,13 @@ namespace Project5.Controllers
             db.Books.Remove(book);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+        //Search action
+        public ActionResult Search (string resname)
+         {
+            var resresult = db.Books
+                .Where(b => b.Title.Contains(resname));
+            return View(resresult);
         }
 
         protected override void Dispose(bool disposing)

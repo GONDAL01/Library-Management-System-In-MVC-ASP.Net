@@ -1,59 +1,133 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Library Management System</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
     <style>
-        .navbar-custom {
-            background-color: #004d40; /* Dark Green for example */
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
         }
 
-            .navbar-custom .nav-link, .navbar-custom .navbar-brand {
-                color: white !important; /* Changes font color to white */
+        .navbar-custom {
+            background-color: #004d40; /* Dark Green */
+            border-bottom: 3px solid #00332a; /* Slightly darker for a subtle contrast */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        }
+
+            .navbar-custom .navbar-brand,
+            .navbar-custom .nav-link {
+                color: #ffffff !important; /* White text */
+                transition: color 0.3s ease; /* Smooth transition for hover effect */
             }
+
+                .navbar-custom .nav-link:hover,
+                .navbar-custom .navbar-brand:hover {
+                    color: #cce7e8 !important; /* Lighter shade for hover effect */
+                }
+
+        .navbar-toggler {
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.7)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        }
 
         .footer-custom {
             background-color: #00251a; /* Darker shade for footer */
             color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
         }
+
+            .footer-custom p {
+                margin: 0;
+            }
+
+        .container.body-content {
+            min-height: 80vh; /* Use minimum height to push footer to bottom */
+            padding-bottom: 30px; /* Space for the footer */
+        }
+
+        /* Style for the main title or banner on the homepage */
+        .main-heading {
+            background-color: #007bff;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 30px; /* Space before the content */
+        }
+
+        /* Utility classes for hidden and visually appealing buttons */
+        .hidden {
+            display: none;
+        }
+
+        .btn-primary-custom {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-align: center;
+            display: inline-block;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+            .btn-primary-custom:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+            }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-custom">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
         <div class="container">
             @Html.ActionLink("Library Management System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Books", "Index", "Books", new { area = "" }, new { @class = "nav-link" })</li>
-                   @if (Request.IsAuthenticated)
+            <div class="collapse navbar-collapse justify-content-between" id="navbarResponsive">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Books", "Index", "Books", new { area = "" }, new { @class = "nav-link" })</li>
+                    @if (Request.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Borrowing", "Index", "Borrowings", new { area = "" }, new { @class = "nav-link" })</li>
-                        if (Roles.IsUserInRole("Librarian") || Roles.IsUserInRole("Manager"))
-                        {
-                            <li>@Html.ActionLink("User", "Index", "Users", new { area = "" }, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("User Role", "Index", "UserRoles", new { area = "" }, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Roles", "Index", "Roles", new { area = "" }, new { @class = "nav-link" })</li>
-                        }
-                    }
-                    <!-- Additional links can be added here if needed -->
-                </ul>
-                <ul class="navbar-nav">
-                    @if (!Request.IsAuthenticated) {
                         <li class="nav-item">
-                            @Html.ActionLink("Login", "Login", "Users", new { area = "" }, new { @class = "nav-link" })
+                            @Html.ActionLink("Borrowed", "Index", "Borrowings", new { area = "" }, new { @class = "nav-link" })
                         </li>
-                    } else {
+                    if (User.IsInRole("Librarian") || User.IsInRole("Manager"))
+                    {
+                        <li class="nav-item">@Html.ActionLink("Users", "Index", "Users", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("User Roles", "Index", "UserRoles", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Roles", "Index", "Roles", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
+                }
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    @if (!Request.IsAuthenticated)
+                    {
+                        <li class="nav-item">@Html.ActionLink("Login", "Login", "Users", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
+                    else
+                    {
+                <li class="nav-item">
+                    @Html.ActionLink("Account", "Details", "Users", null, new { @class = "nav-link" })
+                </li>
                         <li class="nav-item">
                             <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">Logout</a>
-                            @using (Html.BeginForm("Logout", "Users", FormMethod.Post, new { id = "logoutForm", @class = "hidden" }))
+                            @using (Html.BeginForm("Logout", "Users", FormMethod.Post, new { id = "logoutForm" }))
                             {
                                 @Html.AntiForgeryToken()
                             }
@@ -63,9 +137,12 @@
             </div>
         </div>
     </nav>
-    <div class="container body-content">
+
+    <div>
         @RenderBody()
+
         <hr />
+
         <footer class="footer-custom">
             <p>&copy; @DateTime.Now.Year - Library Management System</p>
         </footer>

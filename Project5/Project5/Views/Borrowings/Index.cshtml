@@ -1,68 +1,96 @@
 ﻿@model IEnumerable<Project5.Models.Borrowing>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Borrowed Books";
 }
 
-<h2>Index</h2>
-
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">@TempData["Error"]</div>
-}
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success">@TempData["Success"]</div>
-}
-@if (TempData["Info"] != null)
-{
-    <div class="alert alert-info">@TempData["Info"]</div>
-}
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Book.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BorrowDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReturnDate)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Book.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BorrowDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReturnDate)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.BorrowingId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.BorrowingId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.BorrowingId }) |
-               
-                    @Html.ActionLink("Return", "ReturnBook", new { id = item.BorrowingId })
-                
-            </td>
-        </tr>
+<style>
+    .borrowings-heading {
+        background-color: #007bff; /* Example background color */
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        border-radius: 5px;
+        margin-bottom: 20px;
     }
 
-</table>
+    .table-custom {
+        margin-top: 20px;
+        border-collapse: collapse;
+        width: 100%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .table-custom th, .table-custom td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: #f8f9fa;
+        }
+
+    .btn-custom {
+        display: inline-block;
+        margin: 0 5px; /* Spacing between buttons */
+    }
+</style>
+
+<div class="container">
+    <div class="borrowings-heading">
+        <h2 class="mb-0">BORROWED BOOKS</h2>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Info"] != null)
+    {
+        <div class="alert alert-info">@TempData["Info"]</div>
+    }
+
+    <p class="text-center">
+        @Html.ActionLink("Borrow A New Book", "Create", null, new { @class = "btn btn-primary btn-custom" })
+    </p>
+
+    <table class="table-custom">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Person Name</th>
+                <th>Borrow Date</th>
+                <th>Expected Return Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Book.Title)</td>
+                    <td>@Html.DisplayFor(modelItem => item.User.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.BorrowDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ReturnDate)</td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.BorrowingId }, new { @class = "btn btn-info btn-custom" })
+                        @Html.ActionLink("Return Book", "Return", new { borrowingId = item.BorrowingId }, new { @class = "btn btn-info btn-custom" })
+                        @if (User.IsInRole("Librarian") || User.IsInRole("Manager"))
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.BorrowingId }, new { @class = "btn btn-secondary btn-custom" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.BorrowingId }, new { @class = "btn btn-danger btn-custom" })
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p class="text-center">
+        @Html.ActionLink("Borrow History", "Summary", null, new { @class = "btn btn-primary btn-custom" })
+    </p>
+</div>

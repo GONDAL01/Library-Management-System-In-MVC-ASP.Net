@@ -1,66 +1,77 @@
 ﻿@model Project5.Models.User
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "User Details";
 }
 
-<h2>User Details</h2>
+<style>
+    .user-details-heading {
+        background-color: #007bff; /* Example background color */
+        color: white; /* Text color */
+        padding: 10px 0;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
 
-<div>
-    
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+    .user-details-container {
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        background-color: #f8f9fa;
+        padding: 20px;
+        margin-top: 20px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+        .user-details-container th {
+            width: 30%;
+        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DOB)
-        </dt>
+        .user-details-container td {
+            width: 70%;
+        }
 
-        <dd>
-            @Html.DisplayFor(model => model.DOB)
-        </dd>
+    .btn-custom {
+        width: auto; /* Adjust as necessary, auto will make it as wide as the text + padding */
+        display: block; /* Makes it a block element */
+        margin: 10px auto; /* Centers the button */
+    }
+</style>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
+<div class="container">
+    <h2 class="user-details-heading text-center">USER DETAILS</h2>
+    <div class="user-details-container">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Name:</th>
+                    <td>@Html.DisplayFor(model => model.Name)</td>
+                </tr>
+                <tr>
+                    <th>Date of Birth:</th>
+                    <td>@Html.DisplayFor(model => model.DOB, "{0:yyyy-MM-dd}")</td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td>@Html.DisplayFor(model => model.Email)</td>
+                </tr>
+                <tr>
+                    <th>Contact Number:</th>
+                    <td>@Html.DisplayFor(model => model.PhoneNumber)</td>
+                </tr>
+                <tr>
+                    <th>Address:</th>
+                    <td>@Html.DisplayFor(model => model.Address)</td>
+                </tr>
+            </tbody>
+        </table>
 
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
+        @if (User.Identity.Name == Model.Email)
+        {
+            <a href="@Url.Action("Edit", "Users", new { id = Model.UserId })" class="btn btn-primary btn-custom">Update Profile</a>
+        }
 
-        <dt>
-            Contact Number
-        </dt>
-
-        <dd>
-            Contact Number
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PasswordHash)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PasswordHash)
-        </dd>
-
-    </dl>
+        @if (User.IsInRole("Librarian") || User.IsInRole("Manager"))
+        {
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary btn-custom" })
+        }
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.UserId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

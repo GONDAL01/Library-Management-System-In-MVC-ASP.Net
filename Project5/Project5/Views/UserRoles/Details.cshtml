@@ -1,34 +1,50 @@
 ﻿@model Project5.Models.UserRole
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "User Role Details";
 }
 
-<h2>Details</h2>
+<style>
+    .details-heading {
+        background-color: #4e73df; /* Bootstrap primary color */
+        color: white;
+        padding: 10px 0;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
 
-<div>
-    <h4>User Role</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Role.Rolename)
-        </dt>
+    .details-container {
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        background-color: #f8f9fa;
+        padding: 20px;
+        margin-top: 20px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Role.Rolename)
-        </dd>
+    .btn-custom {
+        width: auto;
+        display: block;
+        margin: 10px auto;
+        text-align: center;
+    }
+</style>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.User.Name)
-        </dt>
+<div class="container">
+    <div class="details-heading">
+        <h2 class="mb-0">USER ROLE DETAILS</h2>
+    </div>
+    <div class="details-container">
+        <dl class="row">
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Role.Rolename)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Role.Rolename)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.User.Name)
-        </dd>
-
-    </dl>
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.User.Name)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.User.Name)</dd>
+        </dl>
+        <div class="text-center">
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary btn-custom" })
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary btn-custom" })
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

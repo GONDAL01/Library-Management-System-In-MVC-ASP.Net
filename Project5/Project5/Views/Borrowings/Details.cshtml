@@ -3,48 +3,49 @@
 @{
     ViewBag.Title = "Details";
 }
+<style>
+
+    .btn-custom {
+        display: inline-block;
+        margin: 0 5px; /* Spacing between buttons */
+    }
+</style>
 
 <h2>Details</h2>
 
-<div>
-    <h4>Borrowing</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Book.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Book.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.User.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BorrowDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BorrowDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ReturnDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ReturnDate)
-        </dd>
-
-    </dl>
-</div>
+<table class="table table-bordered">
+    <tr>
+        <th>Title</th>
+    </tr>
+    <tr>
+        <td>@Html.DisplayFor(model => model.Book.Title)</td>
+    </tr>
+    <tr>
+        <th>Name</th>
+    </tr>
+    <tr>
+        <td>@Html.DisplayFor(model => model.User.Name)</td>
+    </tr>
+    <tr>
+        <th>Borrow Date</th>
+    </tr>
+    <tr>
+        <td>@Html.DisplayFor(model => model.BorrowDate)</td>
+    </tr>
+    <tr>
+        <th>Expected Return Date</th>
+    </tr>
+    <tr>
+        <td>@Html.DisplayFor(model => model.ReturnDate)</td>
+    </tr>
+</table>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.BorrowingId }) |
-    @Html.ActionLink("Back to List", "Index")
+
+    @Html.ActionLink("Back to List", "Index", new { @class = "btn btn-info btn-custom" })
 </p>
+@if (User.IsInRole("Librarian") || User.IsInRole("Manager"))
+{
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.BorrowingId }, new { @class = "btn btn-info btn-custom" })
+    </p>
+}
